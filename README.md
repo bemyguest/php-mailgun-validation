@@ -1,3 +1,5 @@
+### Based on overint/php-mailgun-validation
+
 # php-mailgun-validation
 Validate email address with Mailgun's validation service (Syntax checks, DNS validation, MX validation)  
 You can view Mailgun's blog post about the service here: http://blog.mailgun.com/free-email-validation-api-for-web-forms/  
@@ -11,14 +13,14 @@ Installing using Composer
 ---------
 You can install this package using composer:
 
-    composer require overint/php-mailgun-validation
+    composer require bemyguest/php-mailgun-validation
 
 Example Use Case
 ---------
 
     <?php
     require 'vendor\autoload.php';
-    use overint\MailgunValidator;
+    use bemyguest\MailgunValidator;
     
     $validator = new MailgunValidator('your-mailgun-public-key');
     
