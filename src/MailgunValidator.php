@@ -32,7 +32,7 @@ class MailgunValidator
 
         curl_setopt_array($curl, array(
             CURLOPT_URL => self::API_ENDPOINT . "?address=" . urlencode($email),
-            CURLOPT_USERPWD, 'api' . ':' . $this->apiKey,
+            CURLOPT_USERPWD => 'api' . ':' . $this->apiKey,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_MAXREDIRS => 0,
             CURLOPT_TIMEOUT => 10,
