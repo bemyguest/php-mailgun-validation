@@ -1,4 +1,4 @@
-<?php namespace overint;
+<?php namespace bemyguest;
 
 /**
  * Validate email address with Mailgun's validation service (Syntax checks, DNS validation, MX validation)
@@ -6,7 +6,7 @@
 class MailgunValidator
 {
     /** @var string Mailgun API endpoint URL */
-    const API_ENDPOINT = 'https://api.mailgun.net/v3/address/validate';
+    const API_ENDPOINT = 'https://api.mailgun.net/v4/address/validate';
 
     /** @var string Mailgun email validation API key  */
     private $apiKey;
@@ -31,10 +31,11 @@ class MailgunValidator
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => self::API_ENDPOINT . "?api_key=" . $this->apiKey .  "&address=" . urlencode($email) . '&mailbox_verification=true',
+            CURLOPT_URL => self::API_ENDPOINT . "?address=" . urlencode($email),
+            CURLOPT_USERPWD, 'api' . ':' . $this->apiKey,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_MAXREDIRS => 0,
-            CURLOPT_TIMEOUT => 30,
+            CURLOPT_TIMEOUT => 10,
         ));
 
         $response = curl_exec($curl);
@@ -55,10 +56,10 @@ class MailgunValidator
      * @param string $email Email adddress to be validated
      * @return boolean
      */
-    public function validate($email)
+    public function validate(string $email) :bool
     {
         $ret = $this->queryMailgun($email);
-        return $ret->is_valid === true && $ret->mailbox_verification !== false;
+        return $ret->result === 'deliverable';
     }
 
     /**
@@ -66,7 +67,7 @@ class MailgunValidator
      * @param string $email Email adddress to be validated
      * @return array
      */
-    public function validateExtended($email)
+    public function validateExtended(string $email)
     {
         return $this->queryMailgun($email);
     }
